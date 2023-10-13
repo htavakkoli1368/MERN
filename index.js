@@ -12,11 +12,31 @@ async function main() {
 
 
  const courseSchema = new  mongoose.Schema({
-    name:String,
+    name:{
+        type:String,
+        lowercase:true,
+        trim:true,
+        required:function(){return this.isPublished}
+    },
     author:String,
-    tags:[String],
+    tags:{
+        type:Array,
+        validate:{
+            validator:function(v)
+            { return v && v.length > 0 ; },
+            message:"tags should have atleast one value"
+
+        }
+    },
     date:{type:Date,defaultL:Date.now()},
-    isPublished:Boolean
+    isPublished:Boolean,
+    price:{
+        type:Number,
+        min:2,
+        max:100,
+        get:v=>Math.sqrt(v),
+        set:v=>Math.sqrt(v)
+    }
  });
 
 const  Course = mongoose.model("course",courseSchema);
@@ -24,14 +44,19 @@ const  Course = mongoose.model("course",courseSchema);
  
 async function createCourse(){
     const  course  = new Course({
-        name:"it homes",
-        author:"homa",
-        tags:["node","frontend"],
-        isPublished:false
+        name:"Add new column",
+        author:"hassan",
+        tags:["mongo","mongoose"],
+        isPublished:true,
+        price:49
     })
     
-    const result = await course.save();
-    console.log(result);
+   try {        
+         const result = await course.save();
+         console.log(result);    
+   } catch (ex) {
+    console.log(ex);   
+   }
 }
 // pattern starts with find({author:/^Mosh/}) add i in case insensitive /^Mosh/i
 // pattern ends with find({author:/Mosh$/}) add i in case insensitive /Mosh$/i
@@ -43,5 +68,6 @@ async function getCourse(){
     console.log(courses);
 }
 
+// createCourse();
 getCourse();
   
