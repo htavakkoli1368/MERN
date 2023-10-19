@@ -1,8 +1,8 @@
-const Joi = require('joi')
+const Joi = require('joi');
 const express = require('express')
-const app = express()
+const app = express();
 const mongoose = require('mongoose');
-app.use(express.json())
+app.use(express.json());
 
 main().catch(err => console.log(err));
 

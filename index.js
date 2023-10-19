@@ -4,6 +4,7 @@ const express = require('express')
 const app = express();
 const mongoose = require('mongoose');
 const Users = require('./Routes/users.js');
+const auth = require('./Routes/auth.js');
 main().catch(err => console.log(err));
 
 async function main() {
@@ -13,6 +14,7 @@ async function main() {
 }
 app.use(express.json());
 app.use("/api/users",Users);
+app.use("/api/auth",auth);
 
 
 const port =process.env.PORT || 5000 ;
