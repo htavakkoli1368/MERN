@@ -2,10 +2,15 @@ const {User,ValidationUser} = require('../Models/userModel.js')
 const jwt = require("jsonwebtoken");
 const config = require('config');
 const bcrypt = require("bcrypt");
-const _ = require("lodash");
-const express = require('express') 
-const mongoose = require('mongoose');
+const _ = require("lodash"); 
+const express = require('express');
+const  auth = require('../MiddleWare/auth.js');   
 const router =express.Router(); 
+
+router.get("/me",auth, async (req,res)=>{
+  const user = await User.findById(req.user._id).select("-password");
+  res.send(user); 
+})
 
 router.post("/",async (req,res)=>{
     const {error} = ValidationUser(req.body); 
@@ -16,7 +21,7 @@ router.post("/",async (req,res)=>{
    const salt = await bcrypt.genSalt(10);
    user.password = await bcrypt.hash( user.password ,salt);
    user = await user.save();      
-   const token = jwt.sign({_id : user._id},config.get("jwtPrivateKey"));
+   const token = user.generateToken();
     res.header("x-auth-token",token).send(_.pick(user,["_id","name","email"]));
  })
 

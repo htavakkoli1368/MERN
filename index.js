@@ -4,6 +4,7 @@ const config = require('config');
 const app = express();
 const mongoose = require('mongoose');
 const Users = require('./Routes/users.js');
+const Courses = require('./Routes/course.js');
 const auth = require('./Routes/auth.js'); 
 
 if (!config.get("jwtPrivateKey")) {
@@ -19,6 +20,7 @@ async function main() {
 }
 app.use(express.json());
 app.use("/api/users",Users);
+app.use("/api/courses",Courses);
 app.use("/api/auth",auth);
 
 
