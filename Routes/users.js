@@ -5,10 +5,16 @@ const bcrypt = require("bcrypt");
 const _ = require("lodash"); 
 const express = require('express');
 const  auth = require('../MiddleWare/auth.js');   
+const  admin = require('../MiddleWare/admin.js');   
 const router =express.Router(); 
 
 router.get("/me",auth, async (req,res)=>{
   const user = await User.findById(req.user._id).select("-password");
+  res.send(user); 
+})
+router.delete("/:id",[auth,admin], async (req,res)=>{
+  const user = await User.findByIdAndRemove(req.user._id);
+  if(!user) res.status(404).send("can not delete because id is not exist");
   res.send(user); 
 })
 
