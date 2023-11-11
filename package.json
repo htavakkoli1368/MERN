@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,8 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^7.6.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
